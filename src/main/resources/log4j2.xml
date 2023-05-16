@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}}
+                    %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
+        </Console>
+
+
+        <RollingFile name="STREAMS_LOG_FILE" fileName="${logFile-ws}.log"
+                     filePattern="${logFile-ws}.%d{yyyy-MM-dd}.log">
+            <TimeBasedTriggeringPolicy interval="1"
+                                       modulate="true" />
+            <DefaultRolloverStrategy max="30" />
+            <PatternLayout pattern="${layout}" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.cubeprogramming" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Logger name="com.cubeprogramming" level="INFO"
+                additivity="false">
+            <!-- specify a dedicated appender for the SOAP messages -->
+            <AppenderRef ref="STREAMS_LOG_FILE" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
